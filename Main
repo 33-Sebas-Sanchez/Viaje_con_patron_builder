@@ -1,0 +1,40 @@
+/**
+ * Usa el patrón de dos formas: directamente con el Builder
+ * y a través del Director.
+ */
+public class Main {
+    public static void main(String[] args) {
+        ViajeBuilder builder = new ViajeBuilderConcreto();
+
+        // 1) Usando el Builder directamente
+        Viaje viaje1 = builder
+                .destino("Cartagena")
+                .dias(4)
+                .costoPorDia(350_000)
+                .extra("Tour a las islas")
+                .extra("Seguro de viaje")
+                .build();
+        System.out.println(viaje1);
+        System.out.println();
+
+        // 2) Usando el Director (recetas prearmadas)
+        ViajeDirector director = new ViajeDirector(new ViajeBuilderConcreto());
+        System.out.println(director.escapadaDeFinDeSemana("Villa de Leyva"));
+        System.out.println();
+
+        // 3) Un viaje que no cumple las validaciones
+        try {
+            builder.destino("Medellín")
+                    .dias(1)
+                    .costoPorDia(200_000)
+                    .build();
+        } catch (IllegalStateException e) {
+            System.out.println("Error: " + e.getMessage());
+            System.out.println();
+        }
+        // 4) Usando el otro metodo del Director
+        ViajeDirector director2 = new ViajeDirector(new ViajeBuilderConcreto());
+        System.out.println(director2.viajeCompleto("Paris"));
+        System.out.println();
+    }
+}
