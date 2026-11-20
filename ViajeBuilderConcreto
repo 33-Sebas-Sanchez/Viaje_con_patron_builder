@@ -1,0 +1,60 @@
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * CONCRETE BUILDER (builder concreto)
+ * Implementa los pasos definidos en ViajeBuilder: guarda los datos
+ * en campos temporales y, en build(), valida y crea el Viaje.
+ */
+public class ViajeBuilderConcreto implements ViajeBuilder {
+    private String destino;
+    private int dias;
+    private long costoPorDia;
+    private final List<String> extras = new ArrayList<>();
+
+    @Override
+    public ViajeBuilder destino(String destino) {
+        this.destino = destino;
+        return this;
+    }
+
+    @Override
+    public ViajeBuilder dias(int dias) {
+        this.dias = dias;
+        return this;
+    }
+
+    @Override
+    public ViajeBuilder costoPorDia(long costo) {
+        this.costoPorDia = costo;
+        return this;
+    }
+
+    @Override
+    public ViajeBuilder extra(String extra) {
+        this.extras.add(extra);
+        return this;
+    }
+
+    @Override
+    public Viaje build() {
+        // Validación centralizada antes de entregar el producto
+        if (destino == null || destino.isBlank())
+            throw new IllegalStateException("El destino es obligatorio");
+        if (dias < 2)
+            throw new IllegalStateException("Mínimo 2 días de viaje");
+        if (costoPorDia <= 0)
+            throw new IllegalStateException("El costo por día debe ser mayor a 0");
+
+        Viaje viaje = new Viaje(destino, dias, costoPorDia, extras);
+        reset();   // deja el builder limpio para poder reutilizarlo
+        return viaje;
+    }
+
+    private void reset() {
+        destino = null;
+        dias = 0;
+        costoPorDia = 0;
+        extras.clear();
+    }
+}
