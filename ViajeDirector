@@ -1,0 +1,32 @@
+/**
+ * DIRECTOR 
+ * Conoce "recetas" ya definidas y le dice al Builder qué pasos ejecutar
+ * y en qué orden. Trabaja con la interfaz ViajeBuilder, no con una
+ * implementación concreta.
+ */
+public class ViajeDirector {
+    private final ViajeBuilder builder;
+
+    public ViajeDirector(ViajeBuilder builder) {
+        this.builder = builder;
+    }
+
+    public Viaje escapadaDeFinDeSemana(String destino) {
+        return builder
+                .destino(destino)
+                .dias(2)
+                .costoPorDia(300_000)
+                .extra("Desayuno incluido")
+                .build();
+    }
+
+    public Viaje viajeCompleto(String destino) {
+        return builder
+                .destino(destino)
+                .dias(7)
+                .costoPorDia(350_000)
+                .extra("Tour guiado")
+                .extra("Seguro de viaje")
+                .build();
+    }
+}
